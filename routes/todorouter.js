@@ -105,5 +105,38 @@ router.delete('/deleteTodoionics/:_id' ,async(req,res)=> {
 })
 
 
+router.get("/search/:key",async (req,resp)=>{
+  
+   // resp.send(menus);
+
+
+    try{
+    
+        let Todoionics = await Todoionic.find(
+            {
+                "$or":[
+                    { postedBy:{$regex:new RegExp("^"+ req.params.key, "i") } },
+                    { name:{$regex:new RegExp("^"+ req.params.key, "i") } },
+             
+                    { useremail:{$regex:new RegExp("^"+ req.params.key, "i") } },
+                    { number:{$regex:new RegExp("^"+ req.params.key, "i") } },
+                   
+                    
+                    
+                    
+                ]
+            }
+        )
+        if(!Todoionics){
+            resp.status(404).send({error: "rest not found"})
+        }
+        resp.status(400).json({
+            TotalTodoionics:Todoionics.length,
+            Todoionics})
+    }catch(error){
+        resp.status(401).json({error})
+        console.log(error) 
+    }
+});
 
 module.exports = router;
