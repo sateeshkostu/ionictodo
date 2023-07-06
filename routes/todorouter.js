@@ -117,13 +117,13 @@ router.get("/search/:key",async (req,resp)=>{
                 "$or":[
                     { postedBy:{$regex:new RegExp("^"+ req.params.key, "i") } },
                     { name:{$regex:new RegExp("^"+ req.params.key, "i") } },
-             
                     { useremail:{$regex:new RegExp("^"+ req.params.key, "i") } },
                     { number:{$regex:new RegExp("^"+ req.params.key, "i") } },
+                    { Assignee:{$regex:new RegExp("^"+ req.params.key, "i") } },
+                    { Reporter:{$regex:new RegExp("^"+ req.params.key, "i") } },
+                    { Startdate:{$regex:new RegExp("^"+ req.params.key, "i") } },
+                    { Enddate:{$regex:new RegExp("^"+ req.params.key, "i") } },
                    
-                    
-                    
-                    
                 ]
             }
         )
