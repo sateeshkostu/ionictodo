@@ -105,11 +105,8 @@ router.delete('/deleteTodoionics/:_id' ,async(req,res)=> {
 })
 
 
-router.get("/search/:key",async (req,resp)=>{
-  
+router.get("/search/:key",async (req,resp)=>{  
    // resp.send(menus);
-
-
     try{
     
         let Todoionics = await Todoionic.find(
@@ -119,10 +116,10 @@ router.get("/search/:key",async (req,resp)=>{
                     { name:{$regex:new RegExp("^"+ req.params.key, "i") } },
                     { useremail:{$regex:new RegExp("^"+ req.params.key, "i") } },
                     { number:{$regex:new RegExp("^"+ req.params.key, "i") } },
-                    // { Assignee:{$regex:new RegExp("^"+ req.params.key, "i") } },
+                    { Assignee:{$regex:new RegExp("^"+ req.params.key, "i") } },
                     { Reporter:{$regex:new RegExp("^"+ req.params.key, "i") } },
-                    // { Startdate:{$regex:new RegExp("^"+ req.params.key, "i") } },
-                    // { Enddate:{$regex:new RegExp("^"+ req.params.key, "i") } },
+                    { Startdate:{$regex:new RegExp("^"+ req.params.key, "i") } },
+                    { Enddate:{$regex:new RegExp("^"+ req.params.key, "i") } },
                     { status:{$regex:new RegExp("^"+ req.params.key, "i") } },
                 ]
             }
@@ -139,4 +136,22 @@ router.get("/search/:key",async (req,resp)=>{
     }
 });
 
+
+//get by status
+
+router.get('/getByStatus/:status', async (req, res) => {
+    try {
+        const users = await Todoionic.find({ status: { $regex: new RegExp("^" + req.params.status) } })
+        if (!users) {
+            res.status(404).send({ error: "Users not found" })
+        }
+        res.status(200).json({
+            TotalUsers: users.length,
+            users
+        })
+    } catch (error) {
+        res.status(401).json({ error })
+        console.log(error)
+    }
+});
 module.exports = router;
