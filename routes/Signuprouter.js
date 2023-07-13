@@ -48,6 +48,35 @@ router.post('/logindetails', async (req, res) => {
     })
 });
 
+// role login
+
+router.post('/logindetailsForAdmin', async (req, res) => {
+  ionic.find({ Email: req.body.Email, Password: req.body.Password, role:"admin" }).select().exec().then(
+      doc => {
+
+          if (doc.length) {
+              console.log(doc)
+              res.status(200).json({
+                  message:"Login Successfull",
+                  data: doc
+              })
+          } else {
+              res.status(200).json({
+                  message: "No Matching data found",
+                  status: "failed",
+
+              })
+
+          }
+      }
+  ).catch(err => {
+      res.status.json({
+
+          error: err
+      })
+  })
+});
+
 //post a new todo
 router.post('/signupdetails', async (req, res) => {
     const newSignup = new ionic({
@@ -55,7 +84,10 @@ router.post('/signupdetails', async (req, res) => {
       Email:req.body.Email,
       Password:req.body.Password,
       Confirmpassword:req.body.Confirmpassword,
-      phoneNo:req.body.phoneNo
+      phoneNo:req.body.phoneNo,
+      role:req.body.role,
+      RooneID:req.body.RooneID,
+      team:req.body.team,
     });
     
     //first check if user already existed
@@ -66,7 +98,8 @@ router.post('/signupdetails', async (req, res) => {
           res.status(200).json({
             message:"user signuped successfully",
             status:"success",
-            Email: result.Email
+            Email: result.Email,
+            data:result
           });
 
         }).catch(err => {
@@ -92,5 +125,7 @@ router.delete('/deletetodos/:id', (req, res) => {
       .catch(err => res.status(400).json(`Error: ${err}`));
 
 })
+
+
 
   module.exports = router;

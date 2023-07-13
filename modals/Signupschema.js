@@ -5,8 +5,11 @@ const SignupSchema =  new mongoose.Schema({
     Email : { type : String},
     Password : { type : String},
     Confirmpassword : { type : String},
-    phoneNo : { type : String}
-    
+    phoneNo : { type : String},
+    role: {type : String},
+    RooneID:{ type : String},
+    team : {type : String}
+
   });
 
 module.exports = mongoose.model('ionic', SignupSchema);

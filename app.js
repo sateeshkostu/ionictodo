@@ -3,6 +3,7 @@ const mongoose=require('mongoose')
 const bodyparser= require('body-parser')
 const Signuprouter = require('./routes/Signuprouter')
 const todosrouter = require('./routes/todorouter')
+const adminroutes = require('./routes/adminroutes')
 // const Admin = require('./routes/Admin')
 // const Useradd = require('./routes/Useradd')
 
@@ -24,6 +25,7 @@ app.use(bodyparser.urlencoded({extended: false})); //middleware of parsing bodie
 app.use(bodyparser.json());
 app.use('/ionic', Signuprouter);
 app.use('/ionictodos', todosrouter);
+app.use('/admin', adminroutes);
 // app.use('/signupAdmin',Admin)
 // app.use('/adduser',Useradd)
 
