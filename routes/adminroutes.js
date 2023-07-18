@@ -7,14 +7,16 @@ const router = express.Router();
 const app = express();
 
 // get by role
-router.post('/getByRole', async (req, res) => {
-    ionic.find({ role: req.body.role }).select().exec().then(
+router.post('/getByRole/:role', async (req, res) => {
+    ionic.find({ role: req.params.role }).select().exec().then(  //role passing in body
         doc => {
             if (doc.length) {
                 console.log(doc)
                 res.status(200).json({
+                    total:doc.length,
                     message: "Data retrived successfully",
                     data: doc
+                    
                 })
             } else {
                 res.status(200).json({
@@ -30,10 +32,11 @@ router.post('/getByRole', async (req, res) => {
     })
 });
 
+
 // updateemployee
 router.put('/updateProfile/:id', async (req, res) => {
     const updates = Object.keys(req.body) //keys will be stored in updates ==> req body fields
-    const allowedUpdates = ['Name', 'Email', "Password", 'phoneNo', 'team'] // updates that are allowed
+    const allowedUpdates = ['fName', 'Email', "Password", 'phoneNo', 'team','lName','role'] // updates that are allowed
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update)) // validating the written key in req.body with the allowed updates
     if (!isValidOperation) {
         return res.status(400).json({ error: 'invalid updates' })
@@ -75,10 +78,20 @@ router.delete('/deleteemp/:_id', async (req, res) => {
 
 //get id by Employee
 router.get('/employee/:_id', (req, res) => {
-    ionic.findOne({_id: req.params._id})
+    ionic.findOne({_id: req.params._id})  //id passing in params
         .then(ionic => res.json(ionic))
         .catch(err => res.status(400).json(`Error: ${err}`));
 })
-
+//Get all Todoionics
+router.get('/getemps', async (req, res) => {  //// async makes a function return a Promise
+    try {
+        const employees = await ionic.find({})  
+        //await makes a function wait for a Promise
+        res.status(200).json({ employees })
+    } catch (error) {
+        res.status(400).send(error)
+        console.log(error)
+    }
+})
 
 module.exports = router
