@@ -79,9 +79,15 @@ router.post('/logindetailsForAdmin', async (req, res) => {
 
 //post a new todo
 router.post('/signupdetails', async (req, res) => {
+
+    const fName = req.body.fName;
+const lName = req.body.lName;
+const name = `${fName} ${lName}`;
+   
     const newSignup = new ionic({
-        fName: req.body.fName,
-        lName: req.body.lName,
+        fName,
+        lName,
+        name,
         Email: req.body.Email,
         Password: req.body.Password,
         Confirmpassword: req.body.Confirmpassword,
@@ -90,6 +96,8 @@ router.post('/signupdetails', async (req, res) => {
         RooneID: req.body.RooneID,
         team: req.body.team,
     });
+
+   
 
     //first check if user already existed
     await ionic.findOne({ Email: req.body.Email }).select().exec().then(doc => {
@@ -102,6 +110,7 @@ router.post('/signupdetails', async (req, res) => {
                     Email: result.Email,
                     data: result
                 });
+
 
             }).catch(err => {
                 console.log(err);
